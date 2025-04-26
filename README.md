@@ -1,9 +1,11 @@
-# parking_tickets
-ELT pipeline using NYC parking ticket data from Kaggle
-
 # NYC Parking Tickets Data Pipeline
 
-This project is a data engineering pipeline that processes 42 million NYC parking ticket records. It demonstrates end-to-end data handling using AWS services and prepares the data for modeling in **dbt** and **Redshift**.
+This project is my **very first end-to-end data pipeline**, and I’m excited to get going!
+
+It processes 42 million NYC parking ticket records using AWS services and prepares the data for modeling in **dbt** and **Redshift**. The goal is to explore real-world data at scale, get hands-on with cloud tools, and build something I'm proud to share.
+
+---
+
 
 ---
 
