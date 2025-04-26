@@ -7,8 +7,6 @@ It processes 42 million NYC parking ticket records using AWS services and prepar
 ---
 
 
----
-
 ## Project Goals
 
 - Build a robust, modular data pipeline
