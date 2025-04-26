@@ -2,7 +2,9 @@
 
 This project is my **very first end-to-end data pipeline**, and I’m excited to get going!
 
-It processes 42 million NYC parking ticket records using AWS services and prepares the data for modeling in **dbt** and **Redshift**. The goal is to explore real-world data at scale, get hands-on with cloud tools, and build something I'm proud to share.
+It processes **42 million NYC parking ticket records** using AWS services and prepares the data for modeling in **dbt** and **Redshift**. The goal is to explore real-world data at scale, get hands-on with cloud-native tools, and build something I'm proud to share.
+
+I chose this dataset mainly because its **42 million rows** provide the perfect opportunity to utilize **Apache Spark** and **cloud tools** like AWS Glue, S3, and Athena — giving me a real-world challenge that’s big enough to matter.
 
 ---
 
