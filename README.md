@@ -151,7 +151,7 @@ Out of 50+ original columns in the raw dataset, I identified 15 **core columns**
 5. `violation time` (Peak hours analysis)
 6. `violation county` (Area grouping)
 7. `violation precinct` (Area grouping)
-8. vehicle make` (Car brand analysis)
+8. `vehicle make` (Car brand analysis)
 9. `street name` (Location analysis)
 10. `hydrant violation` (Special violation type)
 11. `double parking violation` (Special violation type)
