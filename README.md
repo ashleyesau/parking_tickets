@@ -1,8 +1,26 @@
 # End-to-end Data Engineering Pipeline using NYC Parking Ticket Data
 
+Welcome to my NYC Parking Tickets Data Pipeline project!
+
+This project represents a major milestone in my journey as a data engineer - bringing together everything I've been learning about cloud-native tools, data modeling, and building scalable pipelines. It started with a real-world dataset of over 42 million parking ticket records from New York City, and became an opportunity to practice designing a robust, modular data system from raw ingestion to clean, analytics-ready data and visualised insights.
+
+I challenged myself to approach this like a real-world data engineering project:
+
+-   **Working with messy public sector data at scale**
+    
+-   **Building quality checks and validation processes into the pipeline**
+    
+-   **Modeling and transforming the data for efficient analytics**
+    
+-   **Leveraging a modern cloud tech stack: AWS S3, Glue, Athena, Redshift, dbt, and Looker**
+    
+
+I was especially excited to bring everything together - not just building the pipeline but designing it thoughtfully: ensuring each phase flowed cleanly into the next, solving unexpected problems along the way, and ending with a functional, polished analytics environment. It’s a project I’m proud of because it doesn't just show technical skills - it shows how much care, learning, and passion I bring into my work.
+
+Thank you for taking a look! I'm excited to keep building, improving, and taking on even bigger challenges ahead.
+
 # Table of Contents
 
-- [Introduction](#introduction)
 - [Project Goals](#project-goals)
 - [Tech Stack](#tech-stack)
  - [Overview of the NYC Parking Tickets Dataset](#overview-of-the-nyc-parking-tickets-dataset)
@@ -25,25 +43,6 @@
   - [Reflection on Challenges and Successes](#reflection-on-challenges-and-successes)
   - [Recommendations for Future Projects](#recommendations-for-future-projects)
 
-# Introduction
-Welcome to my NYC Parking Tickets Data Pipeline project!
-
-This project represents a major milestone in my journey as a data engineer - bringing together everything I've been learning about cloud-native tools, data modeling, and building scalable pipelines. It started with a real-world dataset of over 42 million parking ticket records from New York City, and became an opportunity to practice designing a robust, modular data system from raw ingestion to clean, analytics-ready data and visualised insights.
-
-I challenged myself to approach this like a real-world data engineering project:
-
--   **Working with messy public sector data at scale**
-    
--   **Building quality checks and validation processes into the pipeline**
-    
--   **Modeling and transforming the data for efficient analytics**
-    
--   **Leveraging a modern cloud tech stack: AWS S3, Glue, Athena, Redshift, dbt, and Looker**
-    
-
-I was especially excited to bring everything together - not just building the pipeline but designing it thoughtfully: ensuring each phase flowed cleanly into the next, solving unexpected problems along the way, and ending with a functional, polished analytics environment. It’s a project I’m proud of because it doesn't just show technical skills - it shows how much care, learning, and passion I bring into my work.
-
-Thank you for taking a look! I'm excited to keep building, improving, and taking on even bigger challenges ahead.
 
 # Project Goals
 This project aimed to design a robust, modular data pipeline for NYC Parking Ticket data. My key goals were:
