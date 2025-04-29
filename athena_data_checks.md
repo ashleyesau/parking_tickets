@@ -1,7 +1,5 @@
 
-# Data Cleaning Log on Raw Data in Athena
-
-This document tracks each step in the process of cleaning and preparing the NYC parking tickets dataset for analysis. From filtering relevant columns to removing duplicates and invalid dates, every decision is documented to ensure data integrity and reproducibility. 
+# Data Checks on Raw Data in Athena
 
 ## Table of Contents
 
@@ -147,7 +145,6 @@ FROM reduced_data
 - violation_code: 240 NULL values
 - violation_precinct: 2 NULL values
 - issuing_precinct: 1 NULL value
-- feet_from_curb: 1087 NULL values
 - vehicle_year: 417 NULL values
 ---
 ### Check for duplicate summons numbers
@@ -337,3 +334,71 @@ WHERE regexp_like(r.issue_date, '^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/(19|2
 AND TO_DATE(r.issue_date, 'MM/dd/yyyy') BETWEEN TO_DATE('01/01/2013', 'MM/dd/yyyy') AND TO_DATE('12/31/2017', 'MM/dd/yyyy');
 ```
 
+### Create new version of reduced_data table 
+This has only valid data
+```sql
+CREATE TABLE cleaned_reduced_data AS
+WITH non_duplicate_summons AS (
+  SELECT summons_number
+  FROM reduced_data
+  GROUP BY summons_number
+  HAVING COUNT(*) = 1
+),
+
+valid_date_records AS (
+  SELECT summons_number
+  FROM reduced_data
+  WHERE regexp_like(issue_date, '^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/(19|20)[0-9]{2}$')
+    AND TRY(date_parse(issue_date, '%m/%d/%Y')) BETWEEN DATE '2013-01-01' AND DATE '2017-12-31'
+),
+
+valid_violation_records AS (
+  SELECT summons_number
+  FROM reduced_data
+  WHERE violation_code IS NOT NULL
+),
+
+valid_plate_records AS (
+  SELECT summons_number
+  FROM reduced_data
+  WHERE plate_id IS NOT NULL 
+    AND trim(plate_id) != ''
+),
+
+valid_plate_types AS (
+  SELECT summons_number
+  FROM reduced_data
+  WHERE plate_type IS NOT NULL 
+    AND trim(plate_type) != ''
+),
+
+county_counts AS (
+  SELECT 
+    violation_county,
+    COUNT(*) AS county_count
+  FROM reduced_data
+  WHERE violation_county IS NOT NULL
+    AND trim(violation_county) != ''
+  GROUP BY violation_county
+  HAVING COUNT(*) > 100000
+),
+
+valid_counties AS (
+  SELECT rd.summons_number
+  FROM reduced_data rd
+  JOIN county_counts cc
+    ON rd.violation_county = cc.violation_county
+  WHERE rd.violation_county IS NOT NULL
+    AND trim(rd.violation_county) != ''
+)
+
+SELECT r.*
+FROM reduced_data r
+JOIN non_duplicate_summons nd ON r.summons_number = nd.summons_number
+JOIN valid_date_records vd ON r.summons_number = vd.summons_number
+JOIN valid_violation_records vv ON r.summons_number = vv.summons_number
+JOIN valid_plate_records vpr ON r.summons_number = vpr.summons_number
+JOIN valid_plate_types vpt ON r.summons_number = vpt.summons_number
+JOIN valid_counties vc ON r.summons_number = vc.summons_number;
+
+```
