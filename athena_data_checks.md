@@ -1,5 +1,7 @@
 
-# Data Checks on Raw Data in Athena
+# Data Cleaning Log on Raw Data in Athena
+
+This document tracks each step in the process of cleaning and preparing the NYC parking tickets dataset for analysis. From filtering relevant columns to removing duplicates and invalid dates, every decision is documented to ensure data integrity and reproducibility. 
 
 ## Table of Contents
 
