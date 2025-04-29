@@ -1,5 +1,6 @@
 
 # Data Checks on Raw Data in Athena
+This document outlines the process for **cleaning** and **validating** raw data using **Amazon Athena**. It includes steps for selecting relevant **columns**, checking **data quality** (e.g., handling **NULL values**, **duplicates**, and **invalid dates**), and ensuring that the data is ready for further processing. The goal is to ensure **clean**, reliable data that can be used for **analysis** and **modeling** in downstream tasks.
 
 ## Table of Contents
 
