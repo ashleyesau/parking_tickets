@@ -1,9 +1,26 @@
 
 # Data Checks on Raw Data in Athena
 
----
+## Table of Contents
 
-### Step One: Created New Table with Only Relevant Columns (Renamed Variables to Include Underscores)
+### 1. Data Selection & Renaming
+1. [Created New Table with Only Relevant Columns (Renamed Variables to Include Underscores)](#created-new-table-with-only-relevant-columns-renamed-variables-to-include-underscores)
+
+### 2. Initial Data Validation
+2. [Checked counts of rows and columns of both tables to ensure a match](#checked-counts-of-rows-and-columns-of-both-tables-to-ensure-a-match)
+3. [Count the Number of Columns in raw_data vs reduced_data](#count-the-number-of-columns-in-raw_data-vs-reduced_data)
+
+### 3. Data Quality Checks
+4. [Identified which columns have NULL values](#identified-which-columns-have-null-values)
+5. [Check for duplicate summons numbers](#check-for-duplicate-summons-numbers)
+6. [Checked validity of dates](#checked-validity-of-dates)
+7. [Check how many dates are outside the relevant range for analysis 2013-2017](#check-how-many-dates-are-outside-the-relevant-range-for-analysis-2013-2017)
+
+### 4. Cleaning & Output
+8. [Create table containing records with duplicate summons numbers and invalid dates](#create-table-containing-records-with-duplicate-summons-numbers-and-invalid-dates)
+9. [Create a new table with cleaned data (without duplicate summons numbers and invalid issue dates)](#create-a-new-table-with-cleaned-data-without-duplicate-summons-numbers-and-invalid-issue-dates)
+
+### Created New Table with Only Relevant Columns (Renamed Variables to Include Underscores)
 
 ```sql
 CREATE TABLE reduced_data
@@ -31,7 +48,7 @@ SELECT
   "issuer precinct" AS issuer_precinct
 FROM raw_data;
 ```
-### Step 2: Checked counts of rows and columns of both tables to ensure a match
+### Checked counts of rows and columns of both tables to ensure a match
 
 ```sql
 --- Count comparison
