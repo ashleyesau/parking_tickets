@@ -218,8 +218,9 @@ This way, the main dataset stayed clean, but no data was ever truly "lost" - jus
 
 # Lessons Learned
 
-- **Data quality isn't automatic - even for public datasets.**  
-  I expected some cleaning... but not *this much*. Building in quality checks early paid off massively.
+- **Pushing Through the Mess**
+Almost gave up on the project during the Athena data validation stage — the dataset felt too messy to be useful. But after a break, I reminded myself that **turning messy data into something usable *is* the job**. That mindset shift helped me push through and recommit to building a working dbt model.
+I also learned that **data quality isn't automatic — even for public datasets.** I expected some cleaning... but not *this much*. Fortunately, having quality checks in place from the start made it easier to catch issues early and stay on track.
 
 - **Delete with caution.**  
   Instead of blindly deleting bad records, keeping a separate invalids table gave me peace of mind - and documentation if anyone ever asked, *"What happened to X?"*
@@ -229,4 +230,4 @@ This way, the main dataset stayed clean, but no data was ever truly "lost" - jus
 
 - **Focus on what matters.**  
   Not every field deserved equal attention. Picking my battles based on business value made the project manageable and more meaningful.
-  
+ 
