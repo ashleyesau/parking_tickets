@@ -15,16 +15,17 @@ AS
 SELECT 
   "summons number" AS summons_number,
   "issue date" AS issue_date,
+  "plate id" AS plate_id,
+  "plate type" AS plate_type,
   "violation code" AS violation_code,
   "violation description" AS violation_description,
-  "violation time" AS violation_time,
   "violation county" AS violation_county,
   "violation precinct" AS violation_precinct,
-  "vehicle make" AS vehicle_make,
   "street name" AS street_name,
-  "hydrant violation" AS hydrant_violation,
-  "double parking violation" AS double_parking_violation,
-  "feet from curb" AS feet_from_curb,
+  "registration state" AS registration_state,
+  "vehicle body type" AS vehicle_body_type,
+  "vehicle make" AS vehicle_make,
+  "vehicle year" AS vehicle_year,
   "issuing agency" AS issuing_agency,
   "issuer squad" AS issuer_squad,
   "issuer precinct" AS issuer_precinct
@@ -107,16 +108,17 @@ CROSS JOIN reduced_columns rd
 SELECT
   COUNT(*) - COUNT(summons_number) AS null_summons_number,
   COUNT(*) - COUNT(issue_date) AS null_issue_date,
+  COUNT(*) - COUNT(plate_id) AS null_plate_id,
+  COUNT(*) - COUNT(plate_type) AS null_plate_type,
   COUNT(*) - COUNT(violation_code) AS null_violation_code,
   COUNT(*) - COUNT(violation_description) AS null_violation_description,
-  COUNT(*) - COUNT(violation_time) AS null_violation_time,
   COUNT(*) - COUNT(violation_county) AS null_violation_county,
   COUNT(*) - COUNT(violation_precinct) AS null_violation_precinct,
-  COUNT(*) - COUNT(vehicle_make) AS null_vehicle_make,
   COUNT(*) - COUNT(street_name) AS null_street_name,
-  COUNT(*) - COUNT(hydrant_violation) AS null_hydrant_violation,
-  COUNT(*) - COUNT(double_parking_violation) AS null_double_parking_violation,
-  COUNT(*) - COUNT(feet_from_curb) AS null_feet_from_curb,
+  COUNT(*) - COUNT(registration_state) AS null_registration_state,
+  COUNT(*) - COUNT(vehicle_body_type) AS null_vehicle_body_type,
+  COUNT(*) - COUNT(vehicle_make) AS null_vehicle_make,
+  COUNT(*) - COUNT(vehicle_year) AS null_vehicle_year,
   COUNT(*) - COUNT(issuing_agency) AS null_issuing_agency,
   COUNT(*) - COUNT(issuer_squad) AS null_issuer_squad,
   COUNT(*) - COUNT(issuer_precinct) AS null_issuer_precinct,
@@ -125,7 +127,9 @@ FROM reduced_data
 ```
 - violation_code: 240 NULL values
 - violation_precinct: 2 NULL values
+- issuing_precinct: 1 NULL value
 - feet_from_curb: 1087 NULL values
+- vehicle_year: 417 NULL values
 ---
 ### Check for duplicate summons numbers
 ```sql
@@ -211,16 +215,17 @@ WITH all_invalid_records AS (
   FROM reduced_data
   WHERE summons_number IS NULL
      OR issue_date IS NULL
+     OR plate_id IS NULL
+     OR plate_type IS NULL
      OR violation_code IS NULL
      OR violation_description IS NULL
-     OR violation_time IS NULL
      OR violation_county IS NULL
      OR violation_precinct IS NULL
-     OR vehicle_make IS NULL
      OR street_name IS NULL
-     OR hydrant_violation IS NULL
-     OR double_parking_violation IS NULL
-     OR feet_from_curb IS NULL
+     OR registration_state IS NULL
+     OR vehicle_body_type IS NULL
+     OR vehicle_make IS NULL
+     OR vehicle_year IS NULL
      OR issuing_agency IS NULL
      OR issuer_squad IS NULL
      OR issuer_precinct IS NULL
@@ -297,17 +302,19 @@ non_duplicate_summons AS (
   HAVING COUNT(*) = 1
 ),
 
--- Step 2: Filter for records with valid MM/dd/yyyy date format
+-- Step 2: Filter for records with valid MM/dd/yyyy date format and within 2013-2017
 valid_date_records AS (
   SELECT *
   FROM reduced_data
   WHERE regexp_like(issue_date, '^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/(19|20)[0-9]{2}$')
+  AND TO_DATE(issue_date, 'MM/dd/yyyy') BETWEEN TO_DATE('01/01/2013', 'MM/dd/yyyy') AND TO_DATE('12/31/2017', 'MM/dd/yyyy')
 )
 
 -- Final selection joining both conditions
 SELECT r.*
 FROM reduced_data r
 JOIN non_duplicate_summons n ON r.summons_number = n.summons_number
-WHERE regexp_like(r.issue_date, '^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/(19|20)[0-9]{2}$');
+WHERE regexp_like(r.issue_date, '^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/(19|20)[0-9]{2}$')
+AND TO_DATE(r.issue_date, 'MM/dd/yyyy') BETWEEN TO_DATE('01/01/2013', 'MM/dd/yyyy') AND TO_DATE('12/31/2017', 'MM/dd/yyyy');
 ```
 
