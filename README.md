@@ -144,24 +144,24 @@ Once I had set up the combined table in AWS Glue, it was time to roll up my slee
 
 The raw dataset came with over 50 columns, but not all of them were equally useful. After exploring the structure and content, I narrowed it down to **15 core fields** that would really drive the insights and future modeling work:
 
-| # | Column | Purpose |
-|:--|:-------|:--------|
-| 1 | `summons number` | Unique ticket identifier |
-| 2 | `issue date` | Time-based analysis |
-| 3 | `violation code` | Numeric type of violation |
-| 4 | `violation description` | Human-readable violation type |
-| 5 | `violation time` | Peak hour analysis |
-| 6 | `violation county` | Regional grouping |
-| 7 | `violation precinct` | Localized area grouping |
-| 8 | `vehicle make` | Brand analysis |
-| 9 | `street name` | Location-based analysis |
-| 10 | `hydrant violation` | Special violation type |
-| 11 | `double parking violation` | Special violation type |
-| 12 | `feet from curb` | Distance validation |
-| 13 | `issuing agency` | Agency-level analysis |
-| 14 | `issuer squad` | Squad-level patterns |
-| 15 | `issuer precinct` | Ties squad to geography |
-
+| #  | Column               | Purpose                     |
+|----|----------------------|-----------------------------|
+| 1  | `summons_number`     | Unique ticket identifier    |
+| 2  | `issue_date`         | Time-based analysis         |
+| 3  | `plate_id`           | Vehicle identification      |
+| 4  | `plate_type`         | Vehicle classification      |
+| 5  | `violation_code`     | Numeric violation type      |
+| 6  | `violation_description` | Human-readable violation |
+| 7  | `violation_county`   | Regional grouping           |
+| 8  | `violation_precinct` | Localized area grouping     |
+| 9  | `street_name`        | Location-based analysis     |
+| 10 | `registration_state` | Vehicle origin analysis     |
+| 11 | `vehicle_body_type`  | Vehicle category analysis   |
+| 12 | `vehicle_make`       | Brand analysis              |
+| 13 | `vehicle_year`       | Age analysis                |
+| 14 | `issuing_agency`     | Agency-level analysis       |
+| 15 | `issuer_squad`       | Squad-level patterns        |
+| 16 | `issuer_precinct`    | Ties squad to geography     |
 ---
 
 ### How I Checked the Data
