@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: parking_tickets_db
+    database: parking_tickets_db  # Your actual database name
+    schema: public                # Your schema name
+    tables:
+      - name: reduced_data        # Your table name from the earlier query
+        description: "Raw parking tickets data with 36 million rows"
+        # Optional but recommended configurations
+        # columns:
+        #   - name: id
+        #     description: "Primary key"
+        #   - name: ticket_number
+        #     description: "Unique ticket identifier"
+        # Add more columns as needed
