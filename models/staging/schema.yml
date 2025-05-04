@@ -2,15 +2,41 @@ version: 2
 
 sources:
   - name: parking_tickets_db
-    database: parking_tickets_db  # Your actual database name
-    schema: public                # Your schema name
+    database: parking_tickets_db  # Replace with your actual database name
+    schema: public                # Replace with your actual schema name
     tables:
-      - name: reduced_data        # Your table name from the earlier query
+      - name: reduced_data        # Replace with your actual table name
         description: "Raw parking tickets data with 36 million rows"
-        # Optional but recommended configurations
-        # columns:
-        #   - name: id
-        #     description: "Primary key"
-        #   - name: ticket_number
-        #     description: "Unique ticket identifier"
-        # Add more columns as needed
+        columns:
+          - name: summons_number
+            description: "Unique identifier for each parking ticket"
+          - name: issue_date
+            description: "Date the ticket was issued"
+          - name: plate_id
+            description: "Vehicle license plate ID"
+          - name: plate_type
+            description: "Type of the vehicle plate"
+          - name: violation_code
+            description: "Code identifying the violation"
+          - name: violation_description
+            description: "Description of the violation"
+          - name: violation_county
+            description: "County where the violation occurred"
+          - name: violation_precinct
+            description: "Precinct where the violation was issued"
+          - name: street_name
+            description: "Street where the violation took place"
+          - name: registration_state
+            description: "State of vehicle registration"
+          - name: vehicle_body_type
+            description: "Body type of the vehicle"
+          - name: vehicle_make
+            description: "Make of the vehicle"
+          - name: vehicle_year
+            description: "Model year of the vehicle"
+          - name: issuing_agency
+            description: "Agency that issued the ticket"
+          - name: issuer_squad
+            description: "Squad that issued the ticket"
+          - name: issuer_precinct
+            description: "Precinct of the issuing officer"
