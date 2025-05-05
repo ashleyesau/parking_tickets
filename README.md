@@ -253,16 +253,25 @@ The schema models the cleaned NYC Parking Tickets data using a star schema appro
 
 # Lessons Learned
 
-- **Pushing Through the Mess**
-Almost gave up on the project during the Athena data validation stage — the dataset felt too messy to be useful. But after a break, I reminded myself that **turning messy data into something usable *is* the job**. That mindset shift helped me push through and recommit to building a working dbt model.
-I also learned that **data quality isn't automatic — even for public datasets.** I expected some cleaning... but not *this much*. Fortunately, having quality checks in place from the start made it easier to catch issues early and stay on track.
+### Tool configuration can be the hardest part  
+One of the most frustrating parts of this project was getting various AWS services to talk to each other—especially configuring IAM roles, policies, and permissions. Connecting dbt to Redshift also took a lot of trial and error. I underestimated how much time and patience would be required just to get the tools set up and talking to each other. It wasn’t glamorous work, but it taught me how critical infrastructure setup is in real-world data engineering.
 
-- **Delete with caution.**  
-  Instead of blindly deleting bad records, keeping a separate invalids table gave me peace of mind - and documentation if anyone ever asked, *"What happened to X?"*
+### Documentation is never enough  
+I learned to go beyond official docs and lean on forums, GitHub issues, and community posts when I got stuck. Often, the problem wasn’t that I didn’t understand a tool—it was that the tools were picky about versions, settings, or connection protocols.
 
-- **Understand before modeling.**  
-  Querying in Athena first helped me spot potential pitfalls before getting deep into dbt modeling. A few hours of extra care here saved days later.
+### Smooth is fast  
+Rushing through configuration to “get to the real work” usually slowed me down even more. Being methodical, reading logs carefully, and testing small pieces at a time helped me move faster in the long run.
 
-- **Focus on what matters.**  
-  Not every field deserved equal attention. Picking my battles based on business value made the project manageable and more meaningful.
+### Pushing through the mess  
+I almost gave up on the project during the Athena data validation stage — the dataset felt too messy to be useful. But after a break, I reminded myself that turning messy data into something usable *is* the job. That mindset shift helped me push through and recommit to building a working dbt model. I also learned that data quality isn't automatic — even for public datasets. I expected some cleaning... but not this much. Fortunately, having quality checks in place from the start made it easier to catch issues early and stay on track.
+
+### Delete with caution  
+Instead of blindly deleting bad records, keeping a separate `invalids` table gave me peace of mind — and documentation if anyone ever asked, "What happened to X?"
+
+### Understand before modeling  
+Querying in Athena first helped me spot potential pitfalls before getting deep into dbt modeling. A few hours of extra care here saved days later.
+
+### Focus on what matters  
+Not every field deserved equal attention. Picking my battles based on business value made the project manageable and more meaningful.
+
  
