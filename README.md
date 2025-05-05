@@ -1,3 +1,4 @@
+
 # End-to-end Data Engineering Pipeline using NYC Parking Ticket Data
 
 Welcome to my NYC Parking Tickets Data Pipeline project!
@@ -33,7 +34,7 @@ Thank you for taking a look! I'm excited to keep building, improving, and taking
     - [Exploring and Validating Data Quality in Athena](#exploring-and-validating-data-quality-in-athena)  
     - [How I Checked the Data](#how-i-checked-the-data)  
     - [Handling Invalid Records](#handling-invalid-records)  
-- **Phase Two: Data Modeling**  
+- **Phase Two: Data Modeling with dbt**  
   - [Overview of phase two](#overview-of-phase-two)  
   - [Schema Design and Implementation](#schema-design-and-implementation)  
   - [Transformation Logic](#transformation-logic)  
@@ -64,8 +65,10 @@ This project aimed to design a robust, modular data pipeline for NYC Parking Tic
 | AWS Glue       | Schema inference, ETL with PySpark       |
 | AWS Athena     | Query raw data for validation            |
 | AWS Redshift   | Cloud data warehouse                     |
-| dbt (Data Build Tool)           | Data modeling and testing                |
-| Looker         | Data visualization  |
+| dbt (Data Build Tool) | Data modeling and testing                |
+| Looker         | Data visualization                       |
+| GitHub         | Version control for dbt models and project code |
+
 
 
 # Overview of the NYC Parking Tickets Dataset
@@ -206,9 +209,41 @@ This way, the main dataset stayed clean, but no data was ever truly "lost" - jus
 
 
 -----------
-# Phase Two: Data Modeling
+# Phase Two: Data Modeling with dbt
 ## Overview of phase two
+
+
+In this phase of the project, the focus shifts to transforming and structuring the cleaned data using **dbt (data build tool)** to prepare it for analysis and reporting.
+
+### Tools & Technologies
+- **dbt** for modeling and transformation
+- **Amazon Redshift** as the data warehouse
+- **GitHub** for version control and collaboration
+
+### Workflow
+- Connect dbt to Redshift to begin modeling
+- Create **dbt models** (SQL files) that define transformations
+- Build a **layered architecture** (e.g., staging → intermediate → marts)
+- Use **Jinja + SQL** to write modular, testable, and reusable code
+- Run and test models locally or in the cloud
+- Document the models and generate a dbt docs site
+
+### Objectives
+- Structure raw data into **clean, analysis-ready datasets**
+- Apply **data quality checks** to ensure consistency and accuracy
+- Build trust in the data by using **version control and testing**
+
+### Context
+This builds on the previous phase (data ingestion and cleaning with AWS Glue and Athena).
+
+
 ## Schema Design and Implementation
+
+The schema models the cleaned NYC Parking Tickets data using a star schema approach. At the center is a **fact table** capturing ticket-level data, surrounded by **dimension tables** that provide context - such as vehicle details, violation types, location, and time. This structure supports fast, flexible analytics and aligns with best practices in dimensional modeling. The diagram below illustrates the relationships between the tables and how the data is structured for analysis:
+
+[![Schema Diagram](https://i.postimg.cc/YSt9GxfR/Screenshot-2025-05-05-at-11-59-42.png)](https://postimg.cc/fVgZ1mPS)
+
+
 ## Transformation Logic
 ## Testing and Validation
 
@@ -218,16 +253,25 @@ This way, the main dataset stayed clean, but no data was ever truly "lost" - jus
 
 # Lessons Learned
 
-- **Pushing Through the Mess**
-Almost gave up on the project during the Athena data validation stage — the dataset felt too messy to be useful. But after a break, I reminded myself that **turning messy data into something usable *is* the job**. That mindset shift helped me push through and recommit to building a working dbt model.
-I also learned that **data quality isn't automatic — even for public datasets.** I expected some cleaning... but not *this much*. Fortunately, having quality checks in place from the start made it easier to catch issues early and stay on track.
+### Tool configuration can be the hardest part  
+One of the most frustrating parts of this project was getting various AWS services to talk to each other—especially configuring IAM roles, policies, and permissions. Connecting dbt to Redshift also took a lot of trial and error. I underestimated how much time and patience would be required just to get the tools set up and talking to each other. It wasn’t glamorous work, but it taught me how critical infrastructure setup is in real-world data engineering.
 
-- **Delete with caution.**  
-  Instead of blindly deleting bad records, keeping a separate invalids table gave me peace of mind - and documentation if anyone ever asked, *"What happened to X?"*
+### Documentation is never enough  
+I learned to go beyond official docs and lean on forums, GitHub issues, and community posts when I got stuck. Often, the problem wasn’t that I didn’t understand a tool—it was that the tools were picky about versions, settings, or connection protocols.
 
-- **Understand before modeling.**  
-  Querying in Athena first helped me spot potential pitfalls before getting deep into dbt modeling. A few hours of extra care here saved days later.
+### Smooth is fast  
+Rushing through configuration to “get to the real work” usually slowed me down even more. Being methodical, reading logs carefully, and testing small pieces at a time helped me move faster in the long run.
 
-- **Focus on what matters.**  
-  Not every field deserved equal attention. Picking my battles based on business value made the project manageable and more meaningful.
+### Pushing through the mess  
+I almost gave up on the project during the Athena data validation stage — the dataset felt too messy to be useful. But after a break, I reminded myself that turning messy data into something usable *is* the job. That mindset shift helped me push through and recommit to building a working dbt model. I also learned that data quality isn't automatic — even for public datasets. I expected some cleaning... but not this much. Fortunately, having quality checks in place from the start made it easier to catch issues early and stay on track.
+
+### Delete with caution  
+Instead of blindly deleting bad records, keeping a separate `invalids` table gave me peace of mind — and documentation if anyone ever asked, "What happened to X?"
+
+### Understand before modeling  
+Querying in Athena first helped me spot potential pitfalls before getting deep into dbt modeling. A few hours of extra care here saved days later.
+
+### Focus on what matters  
+Not every field deserved equal attention. Picking my battles based on business value made the project manageable and more meaningful.
+
  
