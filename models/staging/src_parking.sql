@@ -1,7 +1,8 @@
 WITH raw_data AS (
     SELECT
         summons_number,
-        issue_date,
+        -- Fix the issue_date format to DATE
+        TO_DATE(issue_date, 'MM/dd/yyyy') AS issue_date,
         plate_id,
         plate_type,
         violation_code,
