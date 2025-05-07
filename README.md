@@ -269,11 +269,16 @@ Instead of quietly dropping bad data, I made a point to **track it transparently
 
 This way, the cleaned dataset stays solid, but the messy bits aren’t lost — they’re just **set aside for review or audit later**.
 
+-----------
 
+### Athena SQL Queries for Initial Data Validation
+
+At the outset of the project, before diving into cleaning, I used **AWS Athena** to take a first glance at the raw dataset and identify any immediate data quality issues. Using SQL queries, I explored the data to uncover missing values, duplicates, and any strange or inconsistent entries that needed attention. 
+
+You can find all the SQL queries used during this initial validation phase in this [Athena Data Validation SQL Code](https://github.com/ashleyesau/parking_tickets/blob/4f843d7b31e45a3a000543adad224e588256197c/athena_data_checks.md).
 
 
 -----------
-
 # Phase Two: Data Modeling with dbt
 
 ## Overview of Phase Two
@@ -366,8 +371,13 @@ To make sure the models were solid and trustworthy, I added built-in tests using
 These checks catch issues early, so bad data doesn’t silently sneak into reports or dashboards.
 
 ---
+### dbt SQL Models for Data Transformation
 
+Once the raw data was cleaned, the next step was to transform it for analysis using **dbt (data build tool)**. I wrote SQL models to structure and prepare the data for reporting. These dbt models define the transformation logic, including creating fact and dimension tables, and ensuring data quality checks.
 
+You can find all the SQL code used in the dbt modeling process in this [dbt SQL Models Code](https://github.com/ashleyesau/parking_tickets/blob/8322826625824e16f6e783c8348af418b2098fa4/dbt%20models%20README.md).
+
+---
 
 
 ## Lessons Learned
