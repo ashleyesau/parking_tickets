@@ -1,4 +1,5 @@
-# NYC Parking Tickets Data Modeling Project
+# NYC Parking Tickets (Data Modeling Phase)
+
 
 ## Table of Contents
 
@@ -15,6 +16,7 @@
    - [Violation Dimension](#violation-dimension)
 4. [Fact Table](#fact-table)
 5. [Implementation Details](#implementation-details)
+
 
 ## Overview
 
