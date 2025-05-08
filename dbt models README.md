@@ -2,15 +2,19 @@
 
 ## Table of Contents
 
-1.  [Overview](https://claude.ai/chat/4f354dc7-0d68-412a-9696-b236d92558e8#overview)
-2.  [Notes on Data Modeling](https://claude.ai/chat/4f354dc7-0d68-412a-9696-b236d92558e8#notes-on-data-modeling)
-3.  [Dimensional Model Design](https://claude.ai/chat/4f354dc7-0d68-412a-9696-b236d92558e8#dimensional-model-design)
-    -   [Date Dimension](https://claude.ai/chat/4f354dc7-0d68-412a-9696-b236d92558e8#date-dimension)
-    -   [Officer Dimension](https://claude.ai/chat/4f354dc7-0d68-412a-9696-b236d92558e8#officer-dimension)
-    -   [Vehicle Dimension](https://claude.ai/chat/4f354dc7-0d68-412a-9696-b236d92558e8#vehicle-dimension)
-    -   [Violation Dimension](https://claude.ai/chat/4f354dc7-0d68-412a-9696-b236d92558e8#violation-dimension)
-4.  [Fact Table](https://claude.ai/chat/4f354dc7-0d68-412a-9696-b236d92558e8#fact-table)
-5.  [Implementation Details](https://claude.ai/chat/4f354dc7-0d68-412a-9696-b236d92558e8#implementation-details)
+1. [Overview](#overview)
+2. [Notes on Data Modeling](#notes-on-data-modeling)
+   - [Data Quality Management](#data-quality-management)
+   - [Data Standardization](#data-standardization)
+   - [Dimensional Techniques](#dimensional-techniques)
+   - [Analytical Enhancements](#analytical-enhancements)
+3. [Dimensional Model Design](#dimensional-model-design)
+   - [Date Dimension](#date-dimension)
+   - [Officer Dimension](#officer-dimension)
+   - [Vehicle Dimension](#vehicle-dimension)
+   - [Violation Dimension](#violation-dimension)
+4. [Fact Table](#fact-table)
+5. [Implementation Details](#implementation-details)
 
 ## Overview
 
