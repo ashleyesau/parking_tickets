@@ -275,7 +275,7 @@ This way, the cleaned dataset stays solid, but the messy bits aren’t lost — 
 
 At the outset of the project, before diving into cleaning, I used **AWS Athena** to take a first glance at the raw dataset and identify any immediate data quality issues. Using SQL queries, I explored the data to uncover missing values, duplicates, and any strange or inconsistent entries that needed attention. 
 
-You can find all the SQL queries used during this initial validation phase in this [Athena Data Validation SQL Code](https://github.com/ashleyesau/parking_tickets/blob/4f843d7b31e45a3a000543adad224e588256197c/athena_data_checks.md).
+You can find all the SQL queries used during this initial validation phase in this [Athena Data Validation SQL Code](https://github.com/ashleyesau/parking_tickets/blob/3790d9f10a37c1e7c00d315589a24d0e5d46554c/athena%20data%20validation%20README.md).
 
 
 -----------
