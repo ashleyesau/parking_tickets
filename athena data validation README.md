@@ -1,4 +1,3 @@
-
 # Data Checks on Raw Data in Athena
 This document outlines the process for **cleaning** and **validating** raw data using **Amazon Athena**. It includes steps for selecting relevant **columns**, checking **data quality** (e.g., handling **NULL values**, **duplicates**, and **invalid dates**), and ensuring that the data is ready for further processing. The goal is to ensure **clean**, reliable data that can be used for **analysis** and **modeling** in downstream tasks.
 
@@ -49,6 +48,14 @@ SELECT
   "issuer precinct" AS issuer_precinct
 FROM raw_data;
 ```
+
+**Notes:**
+This query creates a new table called `reduced_data` from the raw data with these key operations:
+- Selects only the essential columns needed for analysis (reducing the dataset size)
+- Renames all columns to use underscores instead of spaces for better SQL compatibility
+- Stores the new table in Parquet format (a columnar storage format optimized for analytics)
+- Saves the output to an S3 bucket location for future access
+
 ### Checked counts of rows and columns of both tables to ensure a match
 
 ```sql
@@ -65,6 +72,14 @@ SELECT
   ```
 
 [![Screenshot-2025-04-28-at-18-15-29.png](https://i.postimg.cc/prkkSFdG/Screenshot-2025-04-28-at-18-15-29.png)](https://postimg.cc/SY2W2jCC)
+
+**Notes:**
+This query performs a basic data validation check by:
+- Counting the total number of rows in both the raw and reduced tables
+- Calculating the difference between these counts
+- Creating a validation status field that shows "MATCH" if the counts are identical or "MISMATCH" if they differ
+- The screenshot confirms both tables have the same number of rows (42,339,438), verifying no data was lost during the column reduction process
+
 ---
 ```sql
 SELECT 
@@ -94,8 +109,15 @@ FROM (
 )
 ```
 
-
 [![Screenshot-2025-04-28-at-18-15-42.png](https://i.postimg.cc/j2RZvXRn/Screenshot-2025-04-28-at-18-15-42.png)](https://postimg.cc/7GQ3ZSGq)
+
+**Notes:**
+This query goes a step further in validation by:
+- Comparing the non-NULL counts for specific important columns (summons_number, issue_date, violation_code) 
+- Checking that the column renaming process didn't impact data quality
+- Using UNION ALL to combine the results for multiple columns into a single result set
+- The screenshot shows that all counts match perfectly across the tables, confirming successful data transfer
+
 ---
 ### Count the Number of Columns in raw_data vs reduced_data
 
@@ -118,7 +140,12 @@ SELECT
 FROM raw_columns r
 CROSS JOIN reduced_columns rd
 ```
-[![Screenshot-2025-04-28-at-18-22-08.png](https://i.postimg.cc/1tBpRZZ4/Screenshot-2025-04-28-at-18-22-08.png)](https://postimg.cc/qhttQSqd)
+**Notes:**
+This query examines the schema-level differences between the tables by:
+- Querying the Athena information_schema to count total columns in each table
+- Using Common Table Expressions (CTEs) to organize the query logic
+- Computing the difference to see how many columns were removed
+- The raw_data table had 51 columns while reduced_data has 16 columns.
 
 ---
 ### Identified which columns have NULL values
@@ -143,10 +170,14 @@ SELECT
   COUNT(*) AS total_records
 FROM reduced_data
 ```
-- violation_code: 240 NULL values
-- violation_precinct: 2 NULL values
-- issuing_precinct: 1 NULL value
-- vehicle_year: 417 NULL values
+
+**Notes:**
+This query identifies data quality issues by:
+- Counting NULL values in each column using the COUNT(*) - COUNT(column_name) technique
+- Including the total record count for context
+- The results reveal several columns with NULL values
+- These NULL values need to be addressed in the data cleaning process
+
 ---
 ### Check for duplicate summons numbers
 ```sql
@@ -168,8 +199,15 @@ FROM (
 ```
 [![Screenshot-2025-04-28-at-19-59-48.png](https://i.postimg.cc/X7PHw9Bx/Screenshot-2025-04-28-at-19-59-48.png)](https://postimg.cc/kBxvC6ct)
 
-- Distinct summons number that have been duped: 1,033,989
-- Count of all dupe summons numbers: 2,116,843
+**Notes:**
+This query identifies duplicate records in the dataset by:
+- Using a subquery to find summons_number values that appear more than once
+- Counting how many distinct summons numbers are duplicated
+- Calculating the total number of records involved in duplication
+- The screenshot shows significant duplication issues:
+  - 1,033,989 distinct summons numbers have duplicates
+  - 2,116,843 total records are part of duplicate sets
+- This is a major data quality issue since summons numbers should be unique identifiers
 
 ---
 ### Checked validity of dates
@@ -222,6 +260,13 @@ ORDER BY record_count DESC;
 ```
 [![Screenshot-2025-04-28-at-19-43-54.png](https://i.postimg.cc/nrBz04c7/Screenshot-2025-04-28-at-19-43-54.png)](https://postimg.cc/7JPwLTzY)
 
+**Notes:**
+This query analyzes date formats in the dataset by:
+- Using regular expressions to identify different date formats (MM/dd/yyyy, yyyy-MM-dd, etc.)
+- Creating a CTE (Common Table Expression) to categorize each record's date format
+- Counting how many records fall into each format category
+- The screenshot shows that the vast majority of dates (42,339,198) use the MM/dd/yyyy format
+- This information is crucial for proper date parsing and filtering in subsequent queries
 
 ### Create table containing records with duplicate summons numbers and invalid dates
 ```sql
@@ -280,6 +325,17 @@ FROM
   (SELECT DISTINCT * FROM all_invalid_records) i;
 ```
 
+**Notes:**
+This query creates a new table to track invalid records by:
+- Identifying three main categories of invalid data:
+  1. Records with NULL values in any column
+  2. Records with invalid date formats
+  3. Records with duplicate summons numbers
+- Using UNION ALL to combine all problem records into one result set
+- Adding an "invalid_reason" column to track why each record was flagged as invalid
+- Calculating a total count of distinct summons numbers that will be removed
+- Creating a permanent table to store these invalid records for auditing purposes
+
 ### Check how many dates are outside the relevant range for analysis 2013-2017
 ```sql
 -- Count records with issue_date before 2013
@@ -301,9 +357,15 @@ FROM
     cleaned_reduced_data
 WHERE 
     year(date_parse(issue_date, '%m/%d/%Y')) > 2017;
-
 ```
 
+**Notes:**
+This query analyzes temporal coverage of the data by:
+- Parsing the issue_date field and extracting just the year component
+- Counting records that fall outside the target analysis period (2013-2017)
+- Using UNION ALL to combine the "too early" and "too late" results into one result set
+- These counts help determine how many records will be filtered out due to date range constraints
+- This information is important for understanding what portion of the data will be used in the final analysis
 
 ### Create a new table with cleaned data (without duplicate summons numbers and invalid issue dates)
 
@@ -334,6 +396,15 @@ JOIN non_duplicate_summons n ON r.summons_number = n.summons_number
 WHERE regexp_like(r.issue_date, '^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/(19|20)[0-9]{2}$')
 AND TO_DATE(r.issue_date, 'MM/dd/yyyy') BETWEEN TO_DATE('01/01/2013', 'MM/dd/yyyy') AND TO_DATE('12/31/2017', 'MM/dd/yyyy');
 ```
+
+**Notes:**
+This query creates a cleaned dataset by:
+- Using CTEs to organize the filtering logic into clear steps
+- First identifying summons numbers that appear exactly once (removing duplicates)
+- Then filtering for date validity using regular expressions and date parsing
+- Restricting the dataset to only records from 2013-2017
+- Combining these conditions to create a new cleaned table for analysis
+- This query represents the culmination of the data cleaning process, producing a dataset with uniquely identified records and valid dates within the time range of interest
 
 ### Create new version of reduced_data table 
 This has only valid data
@@ -401,5 +472,16 @@ JOIN valid_violation_records vv ON r.summons_number = vv.summons_number
 JOIN valid_plate_records vpr ON r.summons_number = vpr.summons_number
 JOIN valid_plate_types vpt ON r.summons_number = vpt.summons_number
 JOIN valid_counties vc ON r.summons_number = vc.summons_number;
-
 ```
+
+**Notes:**
+This query creates a more thoroughly cleaned dataset by:
+- Implementing a comprehensive set of data quality filters through multiple CTEs:
+  1. Removing duplicate summons numbers
+  2. Ensuring dates are valid and within the 2013-2017 range
+  3. Filtering out records with NULL violation codes
+  4. Requiring valid plate IDs and types (non-NULL and non-empty)
+  5. Including only counties with substantial data (>100,000 records)
+- Using multiple JOIN operations to apply all these filters simultaneously
+- Using TRY() function with date_parse to handle possible date parsing errors
+- This creates the final cleaned dataset ready for analytical use, with all major data quality issues addressed
