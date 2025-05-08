@@ -375,7 +375,7 @@ These checks catch issues early, so bad data doesn’t silently sneak into repor
 
 Once the raw data was cleaned, the next step was to transform it for analysis using **dbt (data build tool)**. I wrote SQL models to structure and prepare the data for reporting. These dbt models define the transformation logic, including creating fact and dimension tables, and ensuring data quality checks.
 
-You can find all the SQL code used in the dbt modeling process in this [dbt SQL Models Code](https://github.com/ashleyesau/parking_tickets/blob/ba5bafbaab2483730e7dcb2b234c9c2c1ed8e11d/dbt%20models%20README.md).
+You can find all the SQL code used in the dbt modeling process in this [dbt SQL Models Code](https://github.com/ashleyesau/parking_tickets/blob/4d0ebfe314f1661abda7de8359c15a3f12962b97/dbt%20models%20README.md).
 
 ---
 
